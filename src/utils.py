@@ -77,7 +77,7 @@ class Jenkins:
 
             self._run_job(job_name, params, wait_for_result)
 
-        except:
+        except Exception:
             if self.debug:
                 traceback.print_exc()
             else:
