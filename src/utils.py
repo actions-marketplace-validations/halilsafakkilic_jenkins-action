@@ -83,7 +83,7 @@ class Jenkins:
             else:
                 GithubAction.warning('If you want to show error detail please set DEBUG=true.')
 
-            GithubAction.error('Unexpected Exception')
+            GithubAction.error('Unexpected Exception!')
 
     def _run_job(self, job_name, params: dict = None, wait_for_result=False):
         queue_item: QueueItem = self.instance.build_job(job_name, **params)
@@ -96,9 +96,17 @@ class Jenkins:
 
             self._jenkins_console(build)
 
-    def _check_timeout(self):
+    def _check_timeout(self, build: Build = None):
         if self.timeout and ((time.time() - self._operation_start_time) > self.timeout):
-            GithubAction.error('Operation timed out.')
+            # Auto Stop
+            if build is not None:
+                build.stop()
+
+                # Check Aborting
+                if build.result != 'ABORTED':
+                    GithubAction.warning('Build is could not be aborted :/')
+
+            GithubAction.error('Operation timed out!')
 
     def _wait_for_build(self, queue_item):
         self._operation_start_time = time.time()
@@ -125,7 +133,7 @@ class Jenkins:
         return queue_item.get_build()
 
     def _get_build_status(self, build: Build):
-        self._check_timeout()
+        self._check_timeout(build)
 
         if build.result is None:
             time.sleep(self.sleep_time)
@@ -137,7 +145,7 @@ class Jenkins:
     @staticmethod
     def _parse_build_status(build_status):
         if build_status == 'FAILURE':
-            GithubAction.error('Build is failed.')
+            GithubAction.error('Build is failed!')
 
         elif build_status == 'SUCCESS':
             print('Build is succeeded.')
