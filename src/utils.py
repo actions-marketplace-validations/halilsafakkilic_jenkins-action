@@ -81,7 +81,7 @@ class Jenkins:
             if self.debug:
                 traceback.print_exc()
             else:
-                GithubAction.error('If you want to show error detail please set DEBUG=true.')
+                GithubAction.warning('If you want to show error detail please set DEBUG=true.')
 
             GithubAction.error('Unexpected Exception')
 
