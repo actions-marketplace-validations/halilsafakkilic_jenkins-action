@@ -21,7 +21,6 @@ if not JOB_NAME:
 
 JOB_PARAMS = json.loads(os.getenv('INPUT_JOB_PARAMS', '{}'))
 
-CONSOLE = str_to_bool(os.getenv('INPUT_JOB_CONSOLE', 'true'))
 WAIT_FOR_BUILD = str_to_bool(os.getenv('INPUT_ASYNC', 'false')) is False
 DEBUG = str_to_bool(os.getenv('INPUT_DEBUG', 'false'))
 TIMEOUT = int(os.getenv('INPUT_JOB_TIMEOUT', 60))
@@ -29,4 +28,4 @@ TIMEOUT = int(os.getenv('INPUT_JOB_TIMEOUT', 60))
 SLEEP = 1
 
 jenkins = Jenkins(JENKINS_URL, JENKINS_USER, JENKINS_TOKEN, DEBUG, TIMEOUT, SLEEP)
-jenkins.run_job(JOB_NAME, JOB_PARAMS, WAIT_FOR_BUILD, CONSOLE)
+jenkins.run_job(JOB_NAME, JOB_PARAMS, WAIT_FOR_BUILD)

@@ -66,7 +66,7 @@ class Jenkins:
         self.timeout = timeout
         self.sleep_time = sleep_time
 
-    def run_job(self, job_name, params=None, wait_for_result=False, show_console=False):
+    def run_job(self, job_name, params=None, wait_for_result=False):
         try:
             # Debug
             if self.debug:
@@ -75,7 +75,7 @@ class Jenkins:
                 else:
                     params.update({'debug': True})
 
-            self._run_job(job_name, params, wait_for_result, show_console)
+            self._run_job(job_name, params, wait_for_result)
 
         except:
             if self.debug:
@@ -85,7 +85,7 @@ class Jenkins:
 
             GithubAction.error('Unexpected Exception')
 
-    def _run_job(self, job_name, params: dict = None, wait_for_result=False, show_console=False):
+    def _run_job(self, job_name, params: dict = None, wait_for_result=False):
         queue_item: QueueItem = self.instance.build_job(job_name, **params)
 
         print('Build is created: #' + str(queue_item.id))
@@ -94,7 +94,7 @@ class Jenkins:
         if wait_for_result:
             build = self._wait_for_build(queue_item)
 
-            self._jenkins_console(build, show_console)
+            self._jenkins_console(build)
 
     def _check_timeout(self):
         if self.timeout and ((time.time() - self._operation_start_time) > self.timeout):
@@ -149,13 +149,10 @@ class Jenkins:
             GithubAction.warning('Undefined Build Status: ' + build_status)
 
     @staticmethod
-    def _jenkins_console(build: Build, show_console):
+    def _jenkins_console(build: Build):
         console = ''
         for line in build.console_text():
             console += line.decode('utf-8') + '\n'
 
-        if show_console:
-            print('#' * 70)
-            print(console)
-        else:
-            GithubAction.set_output('console', console)
+        print('#' * 70)
+        print(console)

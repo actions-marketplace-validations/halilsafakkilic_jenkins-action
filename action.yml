@@ -24,11 +24,6 @@ inputs:
     required: false
     default: '60'
 
-  job_console:
-    description: 'Jenkins job console printing. (Default: false)'
-    required: false
-    default: false
-
   async:
     description: 'Set to true if you want to just trigger the job without waiting for it to finish. (Default: false)'
     required: false
