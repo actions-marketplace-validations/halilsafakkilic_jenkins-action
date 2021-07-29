@@ -1,6 +1,6 @@
 name: 'Run Jenkins Job and get build result'
 description: 'Triggers Jenkins Job and get build result'
-author: 'HSK'
+author: 'halilsafakkilic'
 
 inputs:
   jenkins_url:
@@ -38,13 +38,10 @@ outputs:
   build_id:
     description: 'Jenkins Build Id'
 
-  console:
-    description: 'Jenkins Console (only populated if JOB_CONSOLE=false) '
-
 runs:
   using: 'docker'
   image: 'Dockerfile'
 
 branding:
-  icon: 'check-circle'
-  color: 'green'
+  icon: 'crosshair'
+  color: 'gray-dark'
