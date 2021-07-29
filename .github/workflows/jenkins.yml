@@ -1,0 +1,20 @@
+name: trigger jenkins job
+on: [ push ]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: example step
+        id: example-step
+        uses: halilsafakkilic/jenkins-action@master
+        with:
+          jenkins_url: ${{ secrets.JENKINS_URL }}
+          jenkins_user: ${{ secrets.JENKINS_USER }}
+          jenkins_token: ${{ secrets.JENKINS_TOKEN }}
+          job_name: "job-name"
+          job_params: '{"gitRef":"${{ github.ref }}"}' # Default {}
+          job_timeout: "3600" # Default 60 sec. (optional)
+          debug: "true" # Default false (optional)
+      - name: Example Step Output
+          run: echo "${{ steps.example-step.outputs.build_id }}"
