@@ -1,0 +1,27 @@
+name: trigger jenkins job
+on: [ push ]
+jobs:
+  build:
+    name: Trigger Jenkins Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Jenkins Action repository
+        uses: actions/checkout@v2
+        with:
+          repository: halilsafakkilic/jenkins-action
+          ref: master
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          path: ./.github/actions/jenkins-action
+      - name: Jenkins New Job Builder
+        id: jenkins-action
+        uses: ./.github/actions/jenkins-action
+        with:
+          jenkins_url: ${{ secrets.JENKINS_URL }}
+          jenkins_user: ${{ secrets.JENKINS_USER }}
+          jenkins_token: ${{ secrets.JENKINS_TOKEN }}
+          job_name: "your-job-name"
+          job_params: '{"gitRef":"${{ github.ref }}"}' # Default {}
+          job_timeout: "3600" # Default 60 sec. (optional)
+          debug: "true" # Default false (optional)
+      - name: Jenkins Build ID
+          run: echo "${{ steps.jenkins-action.outputs.build_id }}"
