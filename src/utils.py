@@ -15,9 +15,11 @@ def str_to_bool(value: str) -> bool:
 
 
 class GithubAction:
+    @staticmethod
     def set_output(output_key: str, output_val):
         print('::set-output name=' + output_key + '::' + str(output_val))
 
+    @staticmethod
     def warning(message: str, file: str = None, line: str = None, col: str = None):
         args = GithubAction.build_args(file, line, col)
 
@@ -29,6 +31,7 @@ class GithubAction:
 
         print(output)
 
+    @staticmethod
     def build_args(file: str = None, line: str = None, col: str = None):
         args = {}
 
@@ -43,6 +46,7 @@ class GithubAction:
 
         return ','.join(str(v) for v in args.values())
 
+    @staticmethod
     def error(message: str, file: str = None, line: str = None, col: str = None):
         args = GithubAction.build_args(file, line, col)
 
